@@ -36,7 +36,7 @@ def create_app():
         """
         response.headers.add(
             "Access-Control-Allow-Headers",
-            "Content-Type,Authorization, true"
+            "Content-Type, Authorization, true"
         )
         response.headers.add(
             "Access-Control-Allow-Methods",
@@ -47,9 +47,9 @@ def create_app():
 
     @app.route("/movies", methods=["GET"])
     @requires_auth("view:movies")
-    def retrieve_movies():
+    def get_movies():
         """
-            Retrieve all movies
+            Get all movies
 
             Args:
                 None
@@ -67,9 +67,9 @@ def create_app():
 
     @app.route("/actors", methods=["GET"])
     @requires_auth("view:actors")
-    def retrieve_actors():
+    def get_actors():
         """
-            Retrieve all actors
+            Get all actors
 
             Args:
                 None
@@ -87,9 +87,9 @@ def create_app():
 
     @app.route("/movies", methods=["POST"])
     @requires_auth("post:movies")
-    def create_movie():
+    def post_movie():
         """
-            Create a new movie
+            Post a movie
 
             Args:
                 None
@@ -97,16 +97,16 @@ def create_app():
             Returns:
                 jsonify: the response object
         """
-        body = request.get_json()
+        request_body = request.get_json()
 
-        if body is None:
+        if request_body is None:
             abort(400)
 
-        title = body.get("title", None)
-        release_date = body.get("release_date", None)
+        title = request_body.get("title", None)
+        release_date = request_body.get("release_date", None)
 
         if title is None or release_date is None:
-            abort(400, "Missing field for Movie")
+            abort(400, "Missing information.")
 
         movie = Movie(title=title, release_date=release_date)
 
@@ -118,9 +118,9 @@ def create_app():
 
     @app.route("/actors", methods=["POST"])
     @requires_auth("post:actors")
-    def create_actor():
+    def post_actor():
         """
-            Create a new actor
+            Post a actor
 
             Args:
                 None
@@ -128,18 +128,18 @@ def create_app():
             Returns:
                 jsonify: the response object
         """
-        body = request.get_json()
+        request_body = request.get_json()
 
-        if body is None:
+        if request_body is None:
             abort(400)
 
-        name = body.get("name", None)
-        age = body.get("age", None)
-        gender = body.get("gender", None)
-        movie_id = body.get("movie_id", None)
+        name = request_body.get("name", None)
+        age = request_body.get("age", None)
+        gender = request_body.get("gender", None)
+        movie_id = request_body.get("movie_id", None)
 
         if name is None or age is None or gender is None or movie_id is None:
-            abort(400, "Missing field for Actor")
+            abort(400, "Missing information.")
 
         actor = Actor(name=name, age=age, gender=gender, movie_id=movie_id)
 
@@ -161,12 +161,12 @@ def create_app():
             Returns:
                 jsonify: the response object
         """
-        movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
+        movie_query = Movie.query.filter(Movie.id == movie_id).one_or_none()
 
-        if movie is None:
-            abort(404, "No movie with given id " + str(movie_id) + " is found")
+        if movie_query is None:
+            abort(404, f"Movie not found.")
 
-        movie.delete()
+        movie_query.delete()
 
         return jsonify({
             "success": True,
@@ -185,12 +185,12 @@ def create_app():
             Returns:
                 jsonify: the response object
         """
-        actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
+        actor_query = Actor.query.filter(Actor.id == actor_id).one_or_none()
 
-        if actor is None:
-            abort(404, "No actor with given id " + str(actor_id) + " is found")
+        if actor_query is None:
+            abort(404, "Actor not found.")
 
-        actor.delete()
+        actor_query.delete()
 
         return jsonify({
             "success": True,
@@ -210,30 +210,26 @@ def create_app():
                 jsonify: the response object
         """
 
-        updated_movie = Movie.query.get(movie_id)
+        movie_query = Movie.query.get(movie_id)
 
-        if not updated_movie:
-            abort(
-                404,
-                "Movie with id: " +
-                str(movie_id) +
-                " could not be found.")
+        if not movie_query:
+            abort(404, "Movie not found.")
 
-        body = request.get_json()
+        request_body = request.get_json()
 
-        title = body.get("title", None)
-        release_date = body.get("release_date", None)
+        title = request_body.get("title", None)
+        release_date = request_body.get("release_date", None)
 
         if title:
-            updated_movie.title = title
+            movie_query.title = title
         if release_date:
-            updated_movie.release_date = release_date
+            movie_query.release_date = release_date
 
-        updated_movie.update()
+        movie_query.update()
 
         return jsonify({
             "success": True,
-            "updated": updated_movie.format()
+            "updated": movie_query.format()
         })
 
     @app.route("/actors/<int:actor_id>", methods=["PATCH"])
@@ -249,10 +245,10 @@ def create_app():
                 jsonify: the response object
         """
 
-        updated_actor = Actor.query.get(actor_id)
+        actor_query = Actor.query.get(actor_id)
 
-        if not updated_actor:
-            abort(404, "Actor with id: " + str(actor_id) + " could not be found.")
+        if not actor_query:
+            abort(404, "Actor not found.")
 
         body = request.get_json()
         name = body.get("name", None)
@@ -261,25 +257,25 @@ def create_app():
         movie_id = body.get("movie_id", None)
 
         if name:
-            updated_actor.name = name
+            actor_query.name = name
         if age:
-            updated_actor.age = age
+            actor_query.age = age
         if gender:
-            updated_actor.gender = gender
+            actor_query.gender = gender
         if movie_id:
-            updated_actor.movie_id = movie_id
+            actor_query.movie_id = movie_id
 
         try:
-            updated_actor.update()
+            actor_query.update()
         except BaseException:
-            abort(400, "Bad formatted request due to nonexistent movie id" + str(movie_id))
+            abort(400, "Invalid request.")
 
         return jsonify({
             "success": True,
-            "updated": updated_actor.format()
+            "updated": actor_query.format()
         })
 
-    def get_error_message(error, default_message):
+    def set_error_message(error, default_message):
         """
             Get the error message
 
@@ -296,7 +292,7 @@ def create_app():
             return default_message
 
     @app.errorhandler(422)
-    def unprocessable(error):
+    def unprocessable_entity(error):
         """
             Handle unprocessable error
 
@@ -309,7 +305,7 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 422,
-            "message": get_error_message(error, "unprocessable"),
+            "message": set_error_message(error, "Unprocessable entity."),
         }), 422
 
     @app.errorhandler(404)
@@ -326,7 +322,7 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 404,
-            "message": get_error_message(error, "resource not found")
+            "message": set_error_message(error, "Not found.")
         }), 404
 
     @app.errorhandler(400)
@@ -343,11 +339,11 @@ def create_app():
         return jsonify({
             "success": False,
             "error": 400,
-            "message": get_error_message(error, "bad request")
+            "message": set_error_message(error, "Bad request.")
         }), 400
 
     @app.errorhandler(AuthError)
-    def auth_error(auth_error):
+    def auth_error(err):
         """
             Handle auth error
 
@@ -359,9 +355,9 @@ def create_app():
         """
         return jsonify({
             "success": False,
-            "error": auth_error.status_code,
-            "message": auth_error.error["description"]
-        }), auth_error.status_code
+            "error": err.status_code,
+            "message": err.error["description"]
+        }), err.status_code
 
     return app
 
