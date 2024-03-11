@@ -29,50 +29,62 @@ pip install -r requirements.txt
 
 ## Endpoints
 
-### Retrieve All Movies
+The endpoints are protected by Auth0 and require a valid JWT token to access. The following roles and permissions are available:
+
+<img src="./figures/roles.png" alt="Auth0 Roles" width="500"/>
+
+### Get Movies
 
 - **URL**: `/movies`
 - **Method**: `GET`
 - **Permissions Required**: `view:movies`
+- **Roles**: [Casting Assistant, Casting Director, Executive Producer]
 
-### Retrieve All Actors
+### Get Actors
 
 - **URL**: `/actors`
 - **Method**: `GET`
 - **Permissions Required**: `view:actors`
+- **Roles**: [Casting Assistant, Casting Director, Executive Producer]
 
-### Create a New Movie
+### Post a Movie
 
 - **URL**: `/movies`
 - **Method**: `POST`
 - **Permissions Required**: `post:movies`
+- **Roles**: [Executive Producer]
 
-### Create a New Actor
+### Post a Actor
 
 - **URL**: `/actors`
 - **Method**: `POST`
 - **Permissions Required**: `post:actors`
+- **Roles**: [Casting Director, Executive Producer]
 
-### Delete a Movie
+### Delete Movie
 
 - **URL**: `/movies/<movie_id>`
 - **Method**: `DELETE`
 - **Permissions Required**: `delete:movies`
+- **Roles**: [Executive Producer]
 
-### Delete an Actor
+### Delete Actor
 
 - **URL**: `/actors/<actor_id>`
 - **Method**: `DELETE`
 - **Permissions Required**: `delete:actors`
+- **Roles**: [Casting Director, Executive Producer]
 
-### Update a Movie
+### Patch a Movie
 
 - **URL**: `/movies/<movie_id>`
 - **Method**: `PATCH`
 - **Permissions Required**: `update:movies`
+- **Roles**: [Executive Producer]
 
-### Update an Actor
+### Patch an Actor
 
 - **URL**: `/actors/<actor_id>`
 - **Method**: `PATCH`
 - **Permissions Required**: `update:actors`
+- **Roles**: [Casting Director, Executive Producer]
