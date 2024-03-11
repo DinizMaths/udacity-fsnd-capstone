@@ -4,6 +4,7 @@
 
 This project is the capstone project for the Udacity Full Stack Developer Nanodegree. The project is a simple web application that allows users to create, read, update, and delete items in a database. The application is built using Python, Flask, and PostgreSQL.
 
+To follow the best practices, the application was developed using Pylint for linting and Pytest for testing.
 
 ## Running the Application
 

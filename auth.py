@@ -148,8 +148,8 @@ def requires_auth(permission=""):
                 payload = verify_decode_jwt(token)
             except:
                 raise AuthError({
-                    'code': 'invalid_token',
-                    'description': 'Invalid token.'
+                    "code": "invalid_token",
+                    "description": "Invalid token."
                 }, 401)
 
             check_permissions(permission, payload)
