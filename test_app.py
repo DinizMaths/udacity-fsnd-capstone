@@ -1,4 +1,7 @@
-import os
+"""
+    File for testing the app
+"""
+
 import unittest
 import json
 from flask_sqlalchemy import SQLAlchemy
