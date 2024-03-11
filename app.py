@@ -46,7 +46,7 @@ def create_app():
         return response
 
     @app.route("/movies", methods=["GET"])
-    @requires_auth("view:movies")
+    @requires_auth("get:movie")
     def get_movies():
         """
             Get all movies
@@ -66,7 +66,7 @@ def create_app():
         })
 
     @app.route("/actors", methods=["GET"])
-    @requires_auth("view:actors")
+    @requires_auth("get:actor")
     def get_actors():
         """
             Get all actors
@@ -86,7 +86,7 @@ def create_app():
         })
 
     @app.route("/movies", methods=["POST"])
-    @requires_auth("post:movies")
+    @requires_auth("post:movie")
     def post_movie():
         """
             Post a movie
@@ -117,7 +117,7 @@ def create_app():
         })
 
     @app.route("/actors", methods=["POST"])
-    @requires_auth("post:actors")
+    @requires_auth("post:actor")
     def post_actor():
         """
             Post a actor
@@ -150,7 +150,7 @@ def create_app():
         })
 
     @app.route("/movies/<int:movie_id>", methods=["DELETE"])
-    @requires_auth("delete:movies")
+    @requires_auth("delete:movie")
     def delete_movie(movie_id):
         """
             Delete a movie
@@ -174,7 +174,7 @@ def create_app():
         })
 
     @app.route("/actors/<int:actor_id>", methods=["DELETE"])
-    @requires_auth("delete:actors")
+    @requires_auth("delete:actor")
     def delete_actor(actor_id):
         """
             Delete an actor
@@ -198,7 +198,7 @@ def create_app():
         })
 
     @app.route("/movies/<int:movie_id>", methods=["PATCH"])
-    @requires_auth("update:movies")
+    @requires_auth("patch:movie")
     def update_movie(movie_id):
         """
             Update a movie
@@ -233,7 +233,7 @@ def create_app():
         })
 
     @app.route("/actors/<int:actor_id>", methods=["PATCH"])
-    @requires_auth("update:actors")
+    @requires_auth("patch:actor")
     def update_actor(actor_id):
         """
             Update an actor

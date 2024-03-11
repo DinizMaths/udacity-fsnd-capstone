@@ -34,58 +34,62 @@ The endpoints are protected by Auth0 and require a valid JWT token to access. Th
 
 <img src="./figures/roles.png" alt="Auth0 Roles" width="500"/>
 
+Additionally, the following permissions are available:
+
+<img src="./figures/permissions.png" alt="Auth0 Permissions" width="500"/>
+
 ### Get Movies
 
 - **URL**: `/movies`
 - **Method**: `GET`
-- **Permissions Required**: `view:movies`
+- **Permissions Required**: `get:movie`
 - **Roles**: [Casting Assistant, Casting Director, Executive Producer]
 
 ### Get Actors
 
 - **URL**: `/actors`
 - **Method**: `GET`
-- **Permissions Required**: `view:actors`
+- **Permissions Required**: `get:actor`
 - **Roles**: [Casting Assistant, Casting Director, Executive Producer]
 
-### Post a Movie
+### Post Movie
 
 - **URL**: `/movies`
 - **Method**: `POST`
-- **Permissions Required**: `post:movies`
+- **Permissions Required**: `post:movie`
 - **Roles**: [Executive Producer]
 
-### Post a Actor
+### Post Actor
 
 - **URL**: `/actors`
 - **Method**: `POST`
-- **Permissions Required**: `post:actors`
+- **Permissions Required**: `post:actor`
 - **Roles**: [Casting Director, Executive Producer]
 
 ### Delete Movie
 
 - **URL**: `/movies/<movie_id>`
 - **Method**: `DELETE`
-- **Permissions Required**: `delete:movies`
+- **Permissions Required**: `delete:movie`
 - **Roles**: [Executive Producer]
 
 ### Delete Actor
 
 - **URL**: `/actors/<actor_id>`
 - **Method**: `DELETE`
-- **Permissions Required**: `delete:actors`
+- **Permissions Required**: `delete:actor`
 - **Roles**: [Casting Director, Executive Producer]
 
-### Patch a Movie
+### Patch Movie
 
 - **URL**: `/movies/<movie_id>`
 - **Method**: `PATCH`
-- **Permissions Required**: `update:movies`
+- **Permissions Required**: `patch:movie`
 - **Roles**: [Executive Producer]
 
-### Patch an Actor
+### Patch Actor
 
 - **URL**: `/actors/<actor_id>`
 - **Method**: `PATCH`
-- **Permissions Required**: `update:actors`
+- **Permissions Required**: `patch:actor`
 - **Roles**: [Casting Director, Executive Producer]
