@@ -36,18 +36,18 @@ def create_app():
         """
         response.headers.add(
             "Access-Control-Allow-Headers",
-            "Content-Type, Authorization, true"
+            "Content-Type, Authorization"
         )
         response.headers.add(
             "Access-Control-Allow-Methods",
-            "GET, PUT, POST, DELETE, OPTIONS"
+            "GET, POST, PATCH, DELETE, OPTIONS"
         )
 
         return response
 
     @app.route("/movies", methods=["GET"])
     @requires_auth("get:movie")
-    def get_movies():
+    def get_movies(payload):
         """
             Get all movies
 
@@ -67,7 +67,7 @@ def create_app():
 
     @app.route("/movies", methods=["POST"])
     @requires_auth("post:movie")
-    def post_movie():
+    def post_movie(payload):
         """
             Post a movie
 
@@ -98,7 +98,7 @@ def create_app():
 
     @app.route("/movies/<int:movie_id>", methods=["PATCH"])
     @requires_auth("patch:movie")
-    def update_movie(movie_id):
+    def update_movie(payload, movie_id):
         """
             Update a movie
 
@@ -133,7 +133,7 @@ def create_app():
 
     @app.route("/movies/<int:movie_id>", methods=["DELETE"])
     @requires_auth("delete:movie")
-    def delete_movie(movie_id):
+    def delete_movie(payload, movie_id):
         """
             Delete a movie
 
@@ -157,7 +157,7 @@ def create_app():
 
     @app.route("/actors", methods=["GET"])
     @requires_auth("get:actor")
-    def get_actors():
+    def get_actors(payload):
         """
             Get all actors
 
@@ -177,7 +177,7 @@ def create_app():
 
     @app.route("/actors", methods=["POST"])
     @requires_auth("post:actor")
-    def post_actor():
+    def post_actor(payload):
         """
             Post a actor
 
@@ -210,7 +210,7 @@ def create_app():
 
     @app.route("/actors/<int:actor_id>", methods=["PATCH"])
     @requires_auth("patch:actor")
-    def update_actor(actor_id):
+    def update_actor(payload, actor_id):
         """
             Update an actor
 
@@ -253,7 +253,7 @@ def create_app():
 
     @app.route("/actors/<int:actor_id>", methods=["DELETE"])
     @requires_auth("delete:actor")
-    def delete_actor(actor_id):
+    def delete_actor(payload, actor_id):
         """
             Delete an actor
 
