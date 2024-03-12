@@ -53,7 +53,7 @@ def get_token_auth_header():
             "description": "Authorization header is expected."
         }, 401)
 
-    header_parts = auth_header.split("")
+    header_parts = auth_header.split(" ")
 
     if len(header_parts) != 2 or header_parts[0].lower() != "bearer":
         raise AuthError({
@@ -103,6 +103,7 @@ def verify_decode_jwt(token):
             }
 
     if rsa_key:
+        print(jwt.decode(token, rsa_key, algorithms=ALGORITHMS, audience=API_AUDIENCE, issuer=f"https://{AUTH0_DOMAIN}/"))
         try:
             payload = jwt.decode(
                 token,
@@ -115,27 +116,34 @@ def verify_decode_jwt(token):
             return payload
 
         except jwt.ExpiredSignatureError:
+            message = "Token expired."
+
             raise AuthError({
                 "code": "token_expired",
-                "description": "Token expired."
+                "description": message
             }, 401)
 
         except jwt.JWTClaimsError:
             message = "Incorrect claims. Please, check the audience and issuer."
+
             raise AuthError({
                 "code": "invalid_claims",
                 "description": message
             }, 401)
 
         except Exception:
+            message = "Unable to parse authentication token."
+
             raise AuthError({
                 "code": "invalid_header",
-                "description": "Unable to parse authentication token."
+                "description": message
             }, 400)
+
+    message = "Unable to find the appropriate key."
 
     raise AuthError({
         "code": "invalid_header",
-        "description": "Unable to find the appropriate key."
+        "description": message
     }, 400)
 
 def requires_auth(permission=""):
