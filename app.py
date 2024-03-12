@@ -2,6 +2,8 @@
     The main application file
 """
 
+import os
+
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from models import setup_db, Movie, Actor
@@ -274,6 +276,28 @@ def create_app():
             "success": True,
             "deleted": actor_id
         })
+
+    # @app.route("/authentification/url", methods=["GET"])
+    # def get_authentification_url():
+    #     """
+    #         Get the authentification url
+
+    #         Args:
+    #             None
+
+    #         Returns:
+    #             jsonify: the response object
+    #     """
+    #     AUTH0_DOMAIN = os.environ["AUTH0_DOMAIN"]
+    #     API_AUDIENCE = os.environ["API_AUDIENCE"]
+    #     AUTH0_CLIENT_ID = os.environ["AUTH0_CLIENT_ID"]
+    #     AUTH0_CALLBACK_URL = os.environ["AUTH0_CALLBACK_URL"]
+
+    #     url = f"https://{AUTH0_DOMAIN}/authorize?audience={API_AUDIENCE}&response_type=token&client_id={AUTH0_CLIENT_ID}&redirect_uri={AUTH0_CALLBACK_URL}"
+
+    #     return jsonify({
+    #         "auth_url": url
+    #     })
 
     def set_error_message(error, default_message):
         """
