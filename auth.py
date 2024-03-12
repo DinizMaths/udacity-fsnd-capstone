@@ -103,7 +103,6 @@ def verify_decode_jwt(token):
             }
 
     if rsa_key:
-        print(jwt.decode(token, rsa_key, algorithms=ALGORITHMS, audience=API_AUDIENCE, issuer=f"https://{AUTH0_DOMAIN}/"))
         try:
             payload = jwt.decode(
                 token,
