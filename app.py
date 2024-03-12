@@ -6,7 +6,7 @@ import os
 
 from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
-from models import setup_db, Movie, Actor
+from models import setup_db, Movie, Actor, db
 from auth import AuthError, requires_auth
 
 
@@ -60,6 +60,10 @@ def create_app():
                 jsonify: the response object
         """
         movies = Movie.query.all()
+
+        if movies is None:
+            abort(404, "No movies found.")
+
         movies = list(map(lambda movie: movie.format(), movies))
 
         return jsonify({
@@ -82,7 +86,7 @@ def create_app():
         request_body = request.get_json()
 
         if request_body is None:
-            abort(400)
+            abort(400, "Invalid request.")
 
         title = request_body.get("title", None)
         release_date = request_body.get("release_date", None)
@@ -387,6 +391,9 @@ def create_app():
 
 
 APP = create_app()
+
+with APP.app_context():
+    db.create_all()
 
 if __name__ == "__main__":
     APP.run(host="0.0.0.0", port=8080, debug=True)
